@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pastebin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #393D49;
+            background-image: url('https://cdn.cirrus.center/main/icons/noise.png');
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        #popup {
+            display: none;
+            position: fixed;
+            background: #444;
+            width: 300px;
+            height: auto;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            z-index: 3;
+            text-align: center;
+            border-radius: 5px;
+            overflow: hidden;
+            background-image: url('https://cdn.cirrus.center/main/icons/noise.png');
+        }
+
+        #linkBox {
+            width: 50%;
+            height: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background-color: #333;
+            box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);
+            border-radius: 5px;
+            resize: none;
+            color: #fff;
+            overflow: hidden;
+            white-space: nowrap;
+            overflow-x: hidden;
+            mask-image: linear-gradient(to right, transparent, black 1em, black 90%, transparent);
+        }
+    
+        #linkContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #copyButton {
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition-duration: 0.4s;
+            margin-left: 10px;
+        }
+
+        #copyButton:hover {
+            background-color: #4CAF50;
+        }
+
+        #copyButton img {
+            width: 20px;
+            height: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #linkTitle {
+            color: #fff;
+        }
+
+        #closeButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+        #statusBar {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            width: 80%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            visibility: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0;
+            background-color: #4CAF50;
+            border-radius: 10px;
+            background-image: linear-gradient(135deg, transparent, transparent 33%, rgba(0,0,0,.1) 33%, rgba(0,0,0,.1) 66%, transparent 66%);
+            background-size: 35px 35px;
+            animation: progress 2s linear infinite;
+        }
+
+        #github-link {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 40px;
+            height: 40px;
+        }
+
+        #github-link img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-top-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .form-top-row input[type="password"],
+        .form-top-row input[type="text"] {
+            background-color: #E4E4E4;
+            width: 220px;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #textToPaste {
+            width: 100%;
+            height: 200px;
+            resize: none;
+            overflow: auto;
+            background-color: #E4E4E4;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            margin-right: 10px;
+            color: black;
+        }
+
+        @keyframes progress {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 35px 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://github.com/caelen-cater/pastebin" target="_blank" id="github-link">
+        <img src="https://cdn.cirrus.center/main/icons/github_white.png" alt="GitHub" />
+    </a>
+    <div class="container">
+        <div class="header-row">
+            <h1>New Paste</h1>
+            <input type="submit" value="Create Paste" form="pasteForm">
+        </div>
+        <form id="pasteForm" action="create.php" method="post">
+            <div class="form-top-row">
+                <input type="password" name="password" placeholder="Password (optional)">
+                <input type="text" name="title" placeholder="Title (optional)">
+                <label><input type="checkbox" name="burn"> Burn on view</label>
+            </div>
+            Paste your text here:
+            <textarea name="text" id="textToPaste"></textarea>
+        </form>
+        <div id="statusBar">
+            <div id="progressBar"></div>
+        </div>
+    </div>
+    <div id="overlay"></div>
+    <div id="popup">
+        <img id="closeButton" src="https://cdn.cirrus.center/main/icons/close.png" alt="Close">
+        <h2 id="linkTitle">Here is your link:</h2>
+        <div id="linkContainer">
+            <textarea id="linkBox" readonly></textarea>
+            <button id="copyButton">
+                <img src="https://cdn.cirrus.center/main/icons/copy.png" alt="Copy">
+            </button>
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function() {
+        document.querySelector('#pasteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var textArea = document.querySelector('#textToPaste');
+            var progressBar = document.querySelector('#progressBar');
+            var formData = new FormData(e.target);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'create.php', true);
+
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    progressBar.style.width = (e.loaded / e.total) * 100 + '%';
+                }
+            };
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var password = formData.get('password');
+                    if (password) {
+                        document.querySelector('#linkBox').value = xhr.responseURL + '?password=' + encodeURIComponent(password);
+                    } else {
+                        document.querySelector('#linkBox').value = xhr.responseURL;
+                    }
+                    document.querySelector('#overlay').style.display = 'block';
+                    document.querySelector('#popup').style.display = 'block';
+                } else {
+                    console.error('An error occurred');
+                }
+            };
+
+            xhr.send(formData);
+        });
+
+        document.querySelector('#closeButton').addEventListener('click', function() {
+            document.querySelector('#overlay').style.display = 'none';
+            document.querySelector('#popup').style.display = 'none';
+        });
+
+        document.querySelector('#copyButton').addEventListener('click', function() {
+            var linkBox = document.querySelector('#linkBox');
+            linkBox.select();
+            document.execCommand('copy');
+
+            var copyButtonIcon = document.querySelector('#copyButton img');
+            var originalIconSrc = copyButtonIcon.src;
+            copyButtonIcon.src = 'https://cdn.cirrus.center/main/icons/check.png';
+
+            setTimeout(function() {
+                copyButtonIcon.src = originalIconSrc;
+            }, 2000);
+        });
+    };
+</script>
+</html>
