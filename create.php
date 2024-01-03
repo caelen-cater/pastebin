@@ -1,5 +1,13 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!file_exists('paste')) {
+        mkdir('paste');
+    }
+
+    $dir = uniqid();
+    
+    mkdir("paste/$dir");
+
     $dir = uniqid();
     
     mkdir("paste/$dir");
@@ -30,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $index .= '    <title>' . ($_POST['title'] ?? 'Pastebin') . '</title>' . PHP_EOL;
     $index .= '</head>' . PHP_EOL;
     $index .= '<body>' . PHP_EOL;
-    $index .= '    <!-- Paste content will be displayed here -->' . PHP_EOL;
+    $index .= '' . PHP_EOL;
     $index .= '</body>' . PHP_EOL;
     $index .= '</html>';
 
