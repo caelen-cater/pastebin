@@ -37,7 +37,6 @@ Follow these steps to set up and use Pastebin:
 - HTML
 - CSS
 - JavaScript
-- [Highlight.js](https://highlightjs.org/) for syntax highlighting
 
 ## Contributing
 
