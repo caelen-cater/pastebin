@@ -244,6 +244,9 @@
             var progressBar = document.querySelector('#progressBar');
             var formData = new FormData(e.target);
 
+            var text = formData.get('text').replace(/\n/g, '<br>');
+            formData.set('text', text);
+
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'create.php', true);
 
