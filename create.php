@@ -2,14 +2,17 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!file_exists('paste')) {
         mkdir('paste');
+
+        $redirectIndex = '<?php' . PHP_EOL;
+        $redirectIndex .= 'header("Location: ..");' . PHP_EOL;
+        $redirectIndex .= 'exit;' . PHP_EOL;
+        file_put_contents('paste/index.php', $redirectIndex);
     }
 
     $dir = uniqid();
-    
     mkdir("paste/$dir");
 
     $dir = uniqid();
-    
     mkdir("paste/$dir");
 
     $index = '<?php' . PHP_EOL;
@@ -45,4 +48,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     file_put_contents("paste/$dir/index.php", $index);
 
     header("Location: /paste/$dir");
+    echo "/paste/$dir";
 }
