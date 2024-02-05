@@ -32,12 +32,6 @@ Follow these steps to set up and use Pastebin:
 
 6. Click the "Create Paste" button to generate a unique link to your text snippet.
 
-## Technologies Used
-
-- HTML
-- CSS
-- JavaScript
-
 ## Contributing
 
 If you'd like to contribute to Pastebin, please follow these guidelines:
