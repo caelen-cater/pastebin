@@ -124,26 +124,6 @@
             width: 20px;
             height: 20px;
         }
-        #statusBar {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            width: 80%;
-            height: 20px;
-            background-color: #ddd;
-            border-radius: 10px;
-            visibility: hidden;
-        }
-
-        #progressBar {
-            height: 100%;
-            width: 0;
-            background-color: #4CAF50;
-            border-radius: 10px;
-            background-image: linear-gradient(135deg, transparent, transparent 33%, rgba(0,0,0,.1) 33%, rgba(0,0,0,.1) 66%, transparent 66%);
-            background-size: 35px 35px;
-            animation: progress 2s linear infinite;
-        }
 
         #github-link {
             position: fixed;
@@ -220,9 +200,6 @@
             Paste your text here:
             <textarea name="text" id="textToPaste"></textarea>
         </form>
-        <div id="statusBar">
-            <div id="progressBar"></div>
-        </div>
     </div>
     <div id="overlay"></div>
     <div id="popup">
@@ -241,7 +218,6 @@
         document.querySelector('#pasteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             var textArea = document.querySelector('#textToPaste');
-            var progressBar = document.querySelector('#progressBar');
             var formData = new FormData(e.target);
 
             var text = formData.get('text').replace(/\n/g, '<br>').replace(/^ /gm, '&nbsp;').replace(/^\t/gm, '&emsp;');
@@ -249,12 +225,6 @@
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'create.php', true);
-
-            xhr.upload.onprogress = function(e) {
-                if (e.lengthComputable) {
-                    progressBar.style.width = (e.loaded / e.total) * 100 + '%';
-                }
-            };
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
