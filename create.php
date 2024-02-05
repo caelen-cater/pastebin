@@ -12,9 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dir = uniqid();
     mkdir("paste/$dir");
 
-    $dir = uniqid();
-    mkdir("paste/$dir");
-
     $index = '<?php' . PHP_EOL;
 
     if (isset($_POST['password']) && $_POST['password'] !== '') {
